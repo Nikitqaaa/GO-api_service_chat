@@ -22,12 +22,12 @@ func (m messageRepository) Create(ctx context.Context, message *domain.Message) 
 }
 
 func (m messageRepository) GetByChatID(ctx context.Context, chatID uint, limit int) ([]domain.Message, error) {
-	var messages []domain.Message
+	var message []domain.Message
 
 	err := m.db.WithContext(ctx).
 		Where("chat_id = ?", chatID).
 		Order("created_at DESC").
 		Limit(limit).
-		Find(&messages).Error
-	return messages, err
+		Find(&message).Error
+	return message, err
 }

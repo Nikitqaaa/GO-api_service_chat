@@ -1,0 +1,13 @@
+env: local
+
+http_server:
+  address: 0.0.0.0 #localhost - для локального запуска, 0.0.0.0 - для docker
+  port: 8080
+
+database:
+  host: db #localhost для локального запуска, db - для docker
+  port: 5432
+  user: postgres
+  password: postgres
+  dbname: chats
+  sslmode: disable

@@ -7,7 +7,7 @@ import (
 
 type ChatRepository interface {
 	Create(ctx context.Context, chat *domain.Chat) error
-	GetByID(ctx context.Context, id uint, withMessages bool, limit int) (*domain.Chat, error)
+	GetByID(ctx context.Context, id uint, withMessage bool, limit int) (*domain.Chat, error)
 	Delete(ctx context.Context, id uint) error
 	Exists(ctx context.Context, id uint) (bool, error)
 }

@@ -1,4 +1,4 @@
-package service
+package services
 
 import (
 	"chats/internal/domain"
@@ -12,6 +12,6 @@ type ChatService interface {
 	ValidateChatExists(ctx context.Context, id uint) error
 }
 
-type MessagesService interface {
-	CreateMessages(ctx context.Context, chatID uint, message string) (*domain.Message, error)
+type MessageService interface {
+	CreateMessage(ctx context.Context, chatID uint, message string) (*domain.Message, error)
 }

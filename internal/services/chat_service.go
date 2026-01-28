@@ -1,4 +1,4 @@
-package service
+package services
 
 import (
 	"chats/internal/domain"
@@ -36,14 +36,6 @@ func (c chatService) CreateChat(ctx context.Context, title string) (*domain.Chat
 }
 
 func (c chatService) GetChat(ctx context.Context, id uint, limit int) (*domain.Chat, error) {
-	if limit <= 0 {
-		limit = 20
-	}
-
-	if limit > 100 {
-		limit = 100
-	}
-
 	return c.chatRepo.GetByID(ctx, id, true, limit)
 }
 

@@ -22,13 +22,13 @@ func (c chatRepository) Create(ctx context.Context, chat *domain.Chat) error {
 	return c.db.WithContext(ctx).Create(chat).Error
 }
 
-func (c chatRepository) GetByID(ctx context.Context, id uint, withMessages bool, limit int) (*domain.Chat, error) {
+func (c chatRepository) GetByID(ctx context.Context, id uint, withMessage bool, limit int) (*domain.Chat, error) {
 	var chat domain.Chat
 
 	query := c.db.WithContext(ctx).Model(&domain.Chat{}).Where("id = ?", id)
 
-	if withMessages {
-		query = query.Preload("Messages", func(db *gorm.DB) *gorm.DB {
+	if withMessage {
+		query = query.Preload("Message", func(db *gorm.DB) *gorm.DB {
 			return db.Order("messages.id DESC").Limit(limit)
 		})
 	}
