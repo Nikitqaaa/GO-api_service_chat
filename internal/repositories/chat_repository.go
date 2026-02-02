@@ -56,6 +56,12 @@ func (c chatRepository) Delete(ctx context.Context, id uint) error {
 }
 
 func (c chatRepository) Exists(ctx context.Context, id uint) (bool, error) {
-	//TODO implement me
-	panic("implement me")
+	var count int64
+
+	err := c.db.WithContext(ctx).Model(&domain.Chat{}).
+		Where("id = ?", id).
+		Count(&count).
+		Error
+
+	return count > 0, err
 }

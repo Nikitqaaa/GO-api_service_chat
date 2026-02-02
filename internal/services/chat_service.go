@@ -44,6 +44,12 @@ func (c chatService) DeleteChat(ctx context.Context, id uint) error {
 }
 
 func (c chatService) ValidateChatExists(ctx context.Context, id uint) error {
-	//TODO implement me
-	panic("implement me")
+	exists, err := c.chatRepo.Exists(ctx, id)
+	if err != nil {
+		return err
+	}
+	if !exists {
+		return domain.ErrNotFound
+	}
+	return nil
 }
