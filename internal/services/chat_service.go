@@ -22,7 +22,7 @@ func (c chatService) CreateChat(ctx context.Context, title string) (*domain.Chat
 		return nil, domain.ErrInvalidInput
 	}
 
-	if len(title) > 0 {
+	if len(title) > 200 {
 		return nil, domain.ErrInvalidInput
 	}
 

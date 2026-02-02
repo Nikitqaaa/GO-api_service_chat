@@ -12,12 +12,23 @@ import (
 func SetupQuestionRoutes(chatHandler *handlers.ChatHandler, messageHandler *handlers.MessageHandler) http.Handler {
 	r := chi.NewRouter()
 
-	r.Route("/api", func(r chi.Router) {
-		r.Get("/chats/{id}", chatHandler.HandleGetChat)
-		r.Post("/chats", chatHandler.HandleCreateChat)
-		r.Delete("/chats/{id}", chatHandler.HandleDeleteChat)
+	//r.Route("/api", func(r chi.Router) {
+	//	r.Get("/chats/{id}", chatHandler.HandleGetChat)
+	//	r.Post("/chats", chatHandler.HandleCreateChat)
+	//	r.Delete("/chats/{id}", chatHandler.HandleDeleteChat)
+	//
+	//	r.Post("/chats/{id}/messages", messageHandler.HandleCreateMessage)
+	//})
 
-		r.Post("/chats/{id}/messages", messageHandler.HandleCreateMessage)
+	r.Route("/api", func(r chi.Router) {
+		r.Route("/chats", func(r chi.Router) {
+			r.Post("/", chatHandler.HandleCreateChat)
+			r.Route("/{id}", func(r chi.Router) {
+				r.Get("/", chatHandler.HandleGetChat)
+				r.Delete("/", chatHandler.HandleDeleteChat)
+				r.Post("/messages", messageHandler.HandleCreateMessage)
+			})
+		})
 	})
 
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {

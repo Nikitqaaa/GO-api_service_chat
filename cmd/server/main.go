@@ -31,7 +31,6 @@ func main() {
 
 	serverAddr := cfg.Server.Address + ":" + cfg.Server.Port
 	log.Printf("Server starting on %s", serverAddr)
-	log.Printf("Swagger documentation available at http://localhost:8080/swagger/index.html")
 
 	if err := http.ListenAndServe(serverAddr, apiRoute); err != nil {
 		log.Fatal("Server failed to start:", err)

@@ -19,6 +19,19 @@ func NewChatRepository(db *gorm.DB) ChatRepository {
 }
 
 func (c chatRepository) Create(ctx context.Context, chat *domain.Chat) error {
+	var existingChat domain.Chat
+	err := c.db.WithContext(ctx).
+		Where("title = ?", chat.Title).
+		First(&existingChat).Error
+
+	if err == nil {
+		return domain.ErrAlreadyExists
+	}
+
+	if !errors.Is(err, gorm.ErrRecordNotFound) {
+		return err
+	}
+
 	return c.db.WithContext(ctx).Create(chat).Error
 }
 

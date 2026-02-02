@@ -14,7 +14,8 @@ func ExtractIDFromPath(r *http.Request) (uint, error) {
 		return 0, errors.New("invalid path format")
 	}
 
-	id, err := strconv.Atoi(parts[1])
+	id, err := strconv.Atoi(parts[2])
+
 	if err != nil || id <= 0 {
 		return 0, errors.New("invalid ID format")
 	}

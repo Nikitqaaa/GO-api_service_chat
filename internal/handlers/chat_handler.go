@@ -5,6 +5,7 @@ import (
 	"chats/internal/helpers"
 	"chats/internal/services"
 	"encoding/json"
+	"errors"
 	"log/slog"
 	"net/http"
 )
@@ -37,16 +38,23 @@ func (h *ChatHandler) HandleCreateChat(w http.ResponseWriter, r *http.Request) {
 
 	createdChat, err := h.service.CreateChat(r.Context(), req.Title)
 	if err != nil {
-		logger.Warn("Internal Server Error", "error", err)
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		logger.Error("Error creating chat", "error", err)
+		switch {
+		case errors.Is(err, domain.ErrInvalidInput):
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		case errors.Is(err, domain.ErrAlreadyExists):
+			http.Error(w, err.Error(), http.StatusConflict)
+			return
+		default:
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
-	err = json.NewEncoder(w).Encode(createdChat)
-	if err != nil {
-		logger.Error("Error encoding response:", "error", err)
-		return
+	if err := json.NewEncoder(w).Encode(createdChat); err != nil {
+		logger.Error("Error encoding response", "error", err)
 	}
 }
 
